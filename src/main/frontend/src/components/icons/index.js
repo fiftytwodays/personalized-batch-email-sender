@@ -1,0 +1,15 @@
+export { default as GalleryIcon } from "./GalleryIcon";
+export { default as MoonIcon } from "./MoonIcon";
+export { default as SunIcon } from "./SunIcon";
+export { default as SettingsIcon } from "./SettingsIcon";
+export { default as EmailIcon } from "./EmailIcon";
+export { default as UsersIcon } from "./UsersIcon";
+export { default as SendIcon } from "./SendIcon";
+export { default as InfoIcon } from "./InfoIcon";
+export { default as PlusIcon } from "./PlusIcon";
+export { default as SearchIcon } from "./SearchIcon";
+export { default as ChevronDownIcon } from "./ChevronDownIcon";
+export { default as VerticalDotsIcon } from "./VerticalDotsIcon";
+export { default as UploadIcon } from "./UploadIcon";
+export { default as PaperClipIcon } from "./PaperClipIcon";
+export { default as Trash } from "./Trash";
