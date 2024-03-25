@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
+
 import hasEmailConfiguration from "./validate-email-props";
 
 const fetcher = async (_, { arg: emailProperties }) => {
@@ -8,9 +10,6 @@ const fetcher = async (_, { arg: emailProperties }) => {
     body: JSON.stringify(emailProperties),
     headers: {
       "Content-Type": "application/json",
-      // Add any necessary headers for file uploading
-      // For example, you might need to set the content type:
-      // "Content-Type": "multipart/form-data",
     },
   });
   const data = await response?.ok;
@@ -18,14 +17,17 @@ const fetcher = async (_, { arg: emailProperties }) => {
 };
 
 const useTestEmailProperties = () => {
+  const [isTesting, setIsTesting] = useState(false);
   const { trigger, data, error, isMutating } = useSWRMutation(
     "/api/email/config/test",
     fetcher,
     {
       onSuccess: (fetchedData) => {
+        toast.dismiss();
         fetchedData && toast.success("Test successful!");
       },
       onError: () => {
+        toast.dismiss();
         toast.error("Testing failed.");
       },
 
@@ -36,15 +38,23 @@ const useTestEmailProperties = () => {
 
   const testEmailProperties = (emailProperties) => {
     if (hasEmailConfiguration(emailProperties)) {
+      setIsTesting(true);
+      toast.loading("Testing..");
       trigger(emailProperties);
     } else {
       toast.error("Invalid email configuration");
     }
   };
+  useEffect(() => {
+    // Reset loading state after mutation completes (success or error)
+    if (!isMutating) {
+      setIsTesting(false);
+    }
+  }, [isMutating]);
 
   return {
     testEmailProperties,
-    isTesting: isMutating,
+    isTesting: isTesting,
     testError: error,
     testSuccess: !!data,
   };

@@ -5,16 +5,18 @@ export function hasEmailConfiguration(obj) {
   if (
     emailConfiguration &&
     typeof emailConfiguration === "object" &&
-    Object.prototype.hasOwnProperty.call(emailConfiguration, "sender") &&
+    emailConfiguration.sender.trim() !== "" &&
     typeof emailConfiguration.sender === "string" &&
-    Object.prototype.hasOwnProperty.call(emailConfiguration, "host") &&
+    emailConfiguration.host.trim() !== "" &&
     typeof emailConfiguration.host === "string" &&
-    Object.prototype.hasOwnProperty.call(emailConfiguration, "username") &&
+    emailConfiguration.username.trim() !== "" &&
     typeof emailConfiguration.username === "string" &&
-    Object.prototype.hasOwnProperty.call(emailConfiguration, "password") &&
+    emailConfiguration.password.trim() !== "" &&
     typeof emailConfiguration.password === "string" &&
     Object.prototype.hasOwnProperty.call(emailConfiguration, "port") &&
     typeof emailConfiguration.port === "number" &&
+    emailConfiguration.port >= 0 &&
+    emailConfiguration.port <= 65535 &&
     Object.prototype.hasOwnProperty.call(emailConfiguration, "smtpAuth") &&
     typeof emailConfiguration.smtpAuth === "boolean" &&
     Object.prototype.hasOwnProperty.call(
@@ -32,7 +34,6 @@ export function hasEmailConfiguration(obj) {
 export function hasEmailProps(emailProps) {
   const { emailSubject, emailBody, attachments } = emailProps;
 
-  console.log("att: ", attachments);
   // Check emailSubject
   if (typeof emailSubject !== "string") {
     return false;
