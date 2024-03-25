@@ -51,13 +51,15 @@ function EmailConfigurations({ emailProperties, setEmailProperties }) {
           />
           <Input
             onValueChange={(value) =>
-              updateEmailProperties("port", parseInt(value, 10))
+              updateEmailProperties("port", parseInt(value, 10) || 0)
             }
             size="md"
             type="number"
             label="Port"
             placeholder="Eg: 587"
             className="flex-none w-32"
+            min="1"
+            max="65535"
             value={emailProperties?.port}
             name="port"
           />
