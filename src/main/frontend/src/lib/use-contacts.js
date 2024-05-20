@@ -1,7 +1,7 @@
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+
+import { useAppStore } from "../store/app-store";
 
 const fetcher = async (_, { arg: formData }) => {
   const response = await fetch("/api/excel/parse", {
@@ -13,12 +13,15 @@ const fetcher = async (_, { arg: formData }) => {
 };
 
 const useContacts = () => {
-  const [contacts, setContacts] = useState([]);
+  const contacts = useAppStore((state) => state.contacts);
+  const addContact = useAppStore((state) => state.addContact);
+  const updateContact = useAppStore((state) => state.updateContact);
+  const deleteContact = useAppStore((state) => state.deleteContact);
 
   const { trigger } = useSWRMutation("/api/excel/parse", fetcher, {
     onSuccess: (data) => {
       data && toast.success("Successfully parsed!");
-      setContacts([...data]);
+      data.map((contact) => addContact(contact));
     },
     onError: () => {
       toast.error("Parsing failed.");
@@ -33,46 +36,11 @@ const useContacts = () => {
     trigger(formData);
   };
 
-  const updateOrAddContact = (newContact) => {
-    const existingContactIndex = contacts.findIndex(
-      (contact) => contact.serialNo === newContact.serialNo
-    );
-
-    if (existingContactIndex !== -1 && newContact?.name && newContact?.email) {
-      // Update existing contact
-      updateContact(newContact, existingContactIndex);
-    } else if (newContact?.name && newContact?.email) {
-      // Add new contact
-      addContact(newContact);
-    }
-  };
-
-  const updateContact = (newContact, existingContactIndex) => {
-    const updatedContacts = [...contacts];
-    updatedContacts[existingContactIndex] = newContact;
-    setContacts(updatedContacts);
-  };
-
-  const addContact = (newContact) => {
-    setContacts([
-      ...contacts,
-      {
-        ...newContact,
-        serialNo: uuidv4(),
-      },
-    ]);
-  };
-
-  const deleteContact = (serialNo) => {
-    setContacts((prevContacts) =>
-      prevContacts.filter((contact) => contact.serialNo !== serialNo)
-    );
-  };
-
   return {
     contacts,
     parseContacts,
-    updateOrAddContact,
+    addContact,
+    updateContact,
     deleteContact,
   };
 };

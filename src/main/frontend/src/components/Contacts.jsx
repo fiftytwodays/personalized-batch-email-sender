@@ -31,7 +31,8 @@ const INITIAL_VISIBLE_COLUMNS = ["name", "prefix", "phoneNo", "actions"];
 export default function Contacts({
   parseContacts,
   contacts,
-  updateOrAddContact,
+  addContact,
+  updateContact,
   deleteContact,
 }) {
   const [currentUpdatingContact, setCurrentUpdatingContact] = useState(null);
@@ -108,15 +109,6 @@ export default function Contacts({
               <p className="text-bold text-small capitalize">{cellValue}</p>
               <p className="text-bold text-tiny text-default-400">
                 {user.email}
-              </p>
-            </div>
-          );
-        case "role":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-              <p className="text-bold text-tiny capitalize text-default-400">
-                {user.team}
               </p>
             </div>
           );
@@ -343,7 +335,8 @@ export default function Contacts({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         contacts={contacts}
-        updateContact={updateOrAddContact}
+        addContact={addContact}
+        updateContact={updateContact}
         defaultContactForm={currentUpdatingContact}
         setDefaultContactForm={setCurrentUpdatingContact}
       />

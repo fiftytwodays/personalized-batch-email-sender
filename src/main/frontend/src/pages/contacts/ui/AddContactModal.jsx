@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -9,60 +9,30 @@ import {
   Input,
 } from "@nextui-org/react";
 
-export default function UpdateContact({
+export default function AddContactModal({
   isOpen,
   onOpenChange,
+  contact,
+  setContact,
   addContact,
   updateContact,
-  defaultContactForm,
-  setDefaultContactForm,
 }) {
-  const [contactForm, setContactForm] = useState({
-    serialNo: "",
-    name: "",
-    prefix: "",
-    nickName: "",
-    email: "",
-    phoneNo: "",
-  });
-
-  useEffect(() => {
-    if (
-      defaultContactForm &&
-      defaultContactForm?.name &&
-      defaultContactForm?.email
-    ) {
-      setContactForm({ ...defaultContactForm });
-    }
-  }, [defaultContactForm]);
-
-  // const updateContacts = () => {
-  //   // check if the contact has all the valid props
-  //   // create a function that do this
-  //   // if it has all the valid prop then call addNewContact
-  //   // clear the contact state when the modal closes
-  //   if (contact?.name && contact?.email) {
-  //     updateContacts({
-  //       ...contact,
-  //       serialNo: uuidv4(),
-  //     });
-  //   }
-  // };
-
-  const updateContactForm = (key, value) => {
-    setContactForm({ ...contactForm, [key]: value });
-  };
-
-  const clearDefaultData = () => {
-    setDefaultContactForm({
+  const [contactForm, setContactForm] = useState(
+    contact || {
       serialNo: "",
       name: "",
       prefix: "",
       nickName: "",
       email: "",
       phoneNo: "",
-    });
+    }
+  );
 
+  const updateContactForm = (key, value) => {
+    setContactForm({ ...contactForm, [key]: value });
+  };
+
+  const clearDefaultData = () => {
     setContactForm({
       serialNo: "",
       name: "",
@@ -71,6 +41,7 @@ export default function UpdateContact({
       email: "",
       phoneNo: "",
     });
+    setContact(null);
   };
 
   const rootDiv = document.getElementById("app");
@@ -100,7 +71,6 @@ export default function UpdateContact({
                   value={contactForm?.name}
                 />
                 <Input
-                  autoFocus
                   label="Email"
                   placeholder="Enter an email"
                   variant="bordered"
@@ -108,7 +78,6 @@ export default function UpdateContact({
                   value={contactForm?.email}
                 />
                 <Input
-                  autoFocus
                   label="Nick name"
                   placeholder="Enter an nickname"
                   variant="bordered"
@@ -120,7 +89,6 @@ export default function UpdateContact({
                 <Input
                   label="Prefix"
                   placeholder="Enter a prefix"
-                  autoFocus
                   variant="bordered"
                   onValueChange={(value) => updateContactForm("prefix", value)}
                   value={contactForm?.prefix}
@@ -128,7 +96,6 @@ export default function UpdateContact({
                 <Input
                   label="Phone"
                   placeholder="Enter phone number"
-                  autoFocus
                   variant="bordered"
                   onValueChange={(value) => updateContactForm("phoneNo", value)}
                   value={contactForm?.phoneNo}
@@ -148,8 +115,12 @@ export default function UpdateContact({
                 <Button
                   color="primary"
                   onPress={() => {
-                    addContact(contactForm);
-                    // updateContact(contactForm);
+                    if (contact) {
+                      console.log("sdfsdf");
+                      updateContact(contactForm);
+                    } else {
+                      addContact(contactForm);
+                    }
                     onClose();
                     clearDefaultData();
                   }}

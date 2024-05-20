@@ -7,9 +7,10 @@ import {
   Layout,
   EmailConfigurations,
   EmailBody,
-  Contacts,
+  // Contacts,
   EventLog,
 } from "./components";
+import { Contacts } from "./pages/contacts";
 import { useContacts, useSendEmailReport } from "./lib";
 import {
   SettingsIcon,
@@ -22,25 +23,29 @@ import {
   hasEmailConfiguration,
   hasEmailProps,
 } from "./lib/validate-email-props";
+// import useEmailStore from "./store/email-store";
+import { useAppStore } from "./store/app-store";
 
 function App({ theme, toggleTheme }) {
+  const emailConfig = useAppStore((state) => state.email.config);
+  const updateEmailConfig = useAppStore((state) => state.updateEmailConfig);
+
   const [selectedTabKey, setSelectedTabKey] = useState("configurations");
-  const [emailProperties, setEmailProperties] = useState({
-    sender: "",
-    host: "smtp.gmail.com",
-    username: "",
-    password: "",
-    port: 587,
-    smtpAuth: true,
-    startTLSEnable: true,
-    replyTo: "",
-    receiver: "",
-  });
+  // const [emailProperties, setEmailProperties] = useState({
+  //   sender: "",
+  //   host: "smtp.gmail.com",
+  //   username: "",
+  //   password: "",
+  //   port: 587,
+  //   smtpAuth: true,
+  //   startTLSEnable: true,
+  //   replyTo: "",
+  //   receiver: "",
+  // });
   const [emailSubject, setEmailSubject] = useState("");
   const [emailBody, setEmailBody] = useState(null);
   const [attachments, setAttachments] = useState([]);
-  const { parseContacts, contacts, updateOrAddContact, deleteContact } =
-    useContacts();
+  const { contacts } = useContacts();
 
   const { sendEmailReport, events } = useSendEmailReport();
   const {
@@ -55,14 +60,14 @@ function App({ theme, toggleTheme }) {
       emailSubject: emailSubject,
       emailBody: emailBody,
       // emailAttachments: attachments?.length > 0 && attachments,
-      "emailConfiguration.host": emailProperties?.host,
-      "emailConfiguration.port": emailProperties?.port,
-      "emailConfiguration.username": emailProperties?.username,
-      "emailConfiguration.sender": emailProperties?.sender,
-      "emailConfiguration.password": emailProperties?.password,
-      "emailConfiguration.smtpAuth": emailProperties?.smtpAuth,
-      "emailConfiguration.startTLSEnable": emailProperties?.startTLSEnable,
-      "emailConfiguration.replyTo": emailProperties?.replyTo,
+      "emailConfiguration.host": emailConfig?.host,
+      "emailConfiguration.port": emailConfig?.port,
+      "emailConfiguration.username": emailConfig?.username,
+      "emailConfiguration.sender": emailConfig?.sender,
+      "emailConfiguration.password": emailConfig?.password,
+      "emailConfiguration.smtpAuth": emailConfig?.smtpAuth,
+      "emailConfiguration.startTLSEnable": emailConfig?.startTLSEnable,
+      "emailConfiguration.replyTo": emailConfig?.replyTo,
 
       contacts: JSON.stringify(contacts),
     };
@@ -72,7 +77,7 @@ function App({ theme, toggleTheme }) {
     }
 
     if (
-      hasEmailConfiguration({ emailConfiguration: emailProperties }) &&
+      hasEmailConfiguration({ emailConfiguration: emailConfig }) &&
       hasEmailProps({ emailSubject, emailBody, attachments })
     ) {
       sendEmailReport(emailProps);
@@ -123,8 +128,8 @@ function App({ theme, toggleTheme }) {
               }
             >
               <EmailConfigurations
-                emailProperties={emailProperties}
-                setEmailProperties={setEmailProperties}
+                emailConfig={emailConfig}
+                updateEmailConfig={updateEmailConfig}
               />
             </Tab>
             <Tab
@@ -136,12 +141,7 @@ function App({ theme, toggleTheme }) {
                 </div>
               }
             >
-              <Contacts
-                parseContacts={parseContacts}
-                contacts={contacts}
-                updateOrAddContact={updateOrAddContact}
-                deleteContact={deleteContact}
-              />
+              <Contacts />
             </Tab>
             <Tab
               key="email"

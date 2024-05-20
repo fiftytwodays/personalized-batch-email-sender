@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "immer": "^10.1.1",
+    "zustand": "^4.5.2"
+  }
+}

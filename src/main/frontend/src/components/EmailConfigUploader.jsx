@@ -4,22 +4,8 @@ import toast from "react-hot-toast";
 import { Trash } from "./icons";
 import { UploadIcon } from "./icons";
 
-function EmailConfigUploader({ setEmailProperties }) {
+function EmailConfigUploader({ updateEmailConfig }) {
   const [fileName, setFileName] = useState("");
-
-  //   const setInputEmailPropValues = (properties) => {
-  //     senderRef.current.value = properties?.emailConfiguration?.sender;
-  //     hostRef.current.value = properties?.emailConfiguration?.host;
-  //     usernameRef.current.value = properties?.emailConfiguration?.username;
-  //     passwordRef.current.value = properties?.emailConfiguration?.password;
-  //     portRef.current.value = properties?.emailConfiguration?.port;
-  //     smtpAuthRef.current.checked = properties?.emailConfiguration?.smtpAuth;
-  //     startTLSRef.current.checked =
-  //       properties?.emailConfiguration?.startTLSEnable;
-
-  //     replyToRef.current.value = properties?.emailConfiguration?.replyTo;
-  //     receiverRef.current.value = properties?.receiver;
-  //   };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -52,7 +38,7 @@ function EmailConfigUploader({ setEmailProperties }) {
       const parsedData = JSON.parse(content);
       if (hasEmailConfiguration(parsedData)) {
         toast.success("Valid JSON Config");
-        setEmailProperties({
+        updateEmailConfig({
           sender: parsedData?.emailConfiguration?.sender,
           host: parsedData?.emailConfiguration?.host,
           username: parsedData?.emailConfiguration?.username,
@@ -74,7 +60,7 @@ function EmailConfigUploader({ setEmailProperties }) {
   const removeJSONConfig = () => {
     setFileName("");
 
-    setEmailProperties({
+    updateEmailConfig({
       sender: "",
       host: "",
       username: "",
