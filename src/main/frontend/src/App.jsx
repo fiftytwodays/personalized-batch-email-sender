@@ -2,14 +2,7 @@ import { useState } from "react";
 import { Tabs, Tab, Button, useDisclosure } from "@nextui-org/react";
 import { Toaster } from "react-hot-toast";
 
-import {
-  Navbar,
-  Layout,
-  EmailConfigurations,
-  EmailBody,
-  // Contacts,
-  EventLog,
-} from "./components";
+import { Navbar, Layout, EmailBody, EventLog } from "./components";
 import { Contacts } from "./pages/contacts";
 import { useContacts, useSendEmailReport } from "./lib";
 import {
@@ -23,25 +16,15 @@ import {
   hasEmailConfiguration,
   hasEmailProps,
 } from "./lib/validate-email-props";
-// import useEmailStore from "./store/email-store";
 import { useAppStore } from "./store/app-store";
+import { Configurations } from "./pages/configurations";
 
 function App({ theme, toggleTheme }) {
   const emailConfig = useAppStore((state) => state.email.config);
   const updateEmailConfig = useAppStore((state) => state.updateEmailConfig);
 
   const [selectedTabKey, setSelectedTabKey] = useState("configurations");
-  // const [emailProperties, setEmailProperties] = useState({
-  //   sender: "",
-  //   host: "smtp.gmail.com",
-  //   username: "",
-  //   password: "",
-  //   port: 587,
-  //   smtpAuth: true,
-  //   startTLSEnable: true,
-  //   replyTo: "",
-  //   receiver: "",
-  // });
+
   const [emailSubject, setEmailSubject] = useState("");
   const [emailBody, setEmailBody] = useState(null);
   const [attachments, setAttachments] = useState([]);
@@ -59,7 +42,6 @@ function App({ theme, toggleTheme }) {
     const emailProps = {
       emailSubject: emailSubject,
       emailBody: emailBody,
-      // emailAttachments: attachments?.length > 0 && attachments,
       "emailConfiguration.host": emailConfig?.host,
       "emailConfiguration.port": emailConfig?.port,
       "emailConfiguration.username": emailConfig?.username,
@@ -127,7 +109,7 @@ function App({ theme, toggleTheme }) {
                 </div>
               }
             >
-              <EmailConfigurations
+              <Configurations
                 emailConfig={emailConfig}
                 updateEmailConfig={updateEmailConfig}
               />
