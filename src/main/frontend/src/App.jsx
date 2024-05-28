@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Tabs, Tab, Button, useDisclosure } from "@nextui-org/react";
 import { Toaster } from "react-hot-toast";
 
-import { Navbar, Layout, EmailBody, EventLog } from "./components";
 import { Contacts } from "./pages/contacts";
-import { useContacts, useSendEmailReport } from "./lib";
+import { Email } from "./pages/email/ui/Email";
+import { Configurations } from "./pages/configurations";
+import { Navbar, Layout, EventLog } from "./components";
 import {
   SettingsIcon,
   EmailIcon,
@@ -12,60 +13,20 @@ import {
   SendIcon,
 } from "./components/icons";
 import "./App.css";
-import {
-  hasEmailConfiguration,
-  hasEmailProps,
-} from "./lib/validate-email-props";
-import { useAppStore } from "./store/app-store";
-import { Configurations } from "./pages/configurations";
+
+import useSubmitEmail from "./pages/email/lib/use-submit-email";
 
 function App({ theme, toggleTheme }) {
-  const emailConfig = useAppStore((state) => state.email.config);
-  const updateEmailConfig = useAppStore((state) => state.updateEmailConfig);
-
   const [selectedTabKey, setSelectedTabKey] = useState("configurations");
-
-  const [emailSubject, setEmailSubject] = useState("");
-  const [emailBody, setEmailBody] = useState(null);
-  const [attachments, setAttachments] = useState([]);
-  const { contacts } = useContacts();
-
-  const { sendEmailReport, events } = useSendEmailReport();
   const {
     isOpen: isEventLogModalOpen,
     onOpen: onEventLogModalOpen,
     onOpenChange: onEventLogOpenChange,
   } = useDisclosure();
+
+  const { events, sendEmail } = useSubmitEmail(onEventLogModalOpen);
+
   const tabsList = ["configurations", "contacts", "email"];
-
-  const submitBatchEmail = () => {
-    const emailProps = {
-      emailSubject: emailSubject,
-      emailBody: emailBody,
-      "emailConfiguration.host": emailConfig?.host,
-      "emailConfiguration.port": emailConfig?.port,
-      "emailConfiguration.username": emailConfig?.username,
-      "emailConfiguration.sender": emailConfig?.sender,
-      "emailConfiguration.password": emailConfig?.password,
-      "emailConfiguration.smtpAuth": emailConfig?.smtpAuth,
-      "emailConfiguration.startTLSEnable": emailConfig?.startTLSEnable,
-      "emailConfiguration.replyTo": emailConfig?.replyTo,
-
-      contacts: JSON.stringify(contacts),
-    };
-
-    if (attachments?.length > 0) {
-      emailProps["emailAttachments"] = attachments;
-    }
-
-    if (
-      hasEmailConfiguration({ emailConfiguration: emailConfig }) &&
-      hasEmailProps({ emailSubject, emailBody, attachments })
-    ) {
-      sendEmailReport(emailProps);
-      onEventLogModalOpen();
-    }
-  };
 
   const handleNextClick = () => {
     const currentIndex = tabsList.indexOf(selectedTabKey);
@@ -89,10 +50,7 @@ function App({ theme, toggleTheme }) {
       <Navbar toggleTheme={toggleTheme} />
 
       <div id="app" className="mt-12  text-foreground">
-        <form
-          className="flex flex-col  items-center"
-          onSubmit={submitBatchEmail}
-        >
+        <form className="flex flex-col  items-center">
           <Tabs
             selectedKey={selectedTabKey}
             aria-label="Options"
@@ -109,10 +67,7 @@ function App({ theme, toggleTheme }) {
                 </div>
               }
             >
-              <Configurations
-                emailConfig={emailConfig}
-                updateEmailConfig={updateEmailConfig}
-              />
+              <Configurations />
             </Tab>
             <Tab
               key="contacts"
@@ -134,14 +89,7 @@ function App({ theme, toggleTheme }) {
                 </div>
               }
             >
-              <EmailBody
-                attachments={attachments}
-                setAttachments={setAttachments}
-                emailSubject={emailSubject}
-                setEmailSubject={setEmailSubject}
-                emailBody={emailBody}
-                setEmailBody={setEmailBody}
-              />
+              <Email />
             </Tab>
           </Tabs>
 
@@ -152,7 +100,7 @@ function App({ theme, toggleTheme }) {
             {selectedTabKey === "email" ? (
               <Button
                 color="primary"
-                onPress={submitBatchEmail}
+                onPress={sendEmail}
                 endContent={<SendIcon className="w-4 h-4 text-zinc-50" />}
               >
                 Send email

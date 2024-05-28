@@ -4,9 +4,10 @@ import { useAppStore } from "src/store/app-store";
 import useEventStream from "src/pages/email/lib/use-event-stream";
 import isValidEmailConfig from "src/pages/configurations/lib/validate-email-config";
 
-const useSendEmailReport = (onEventLogModalOpen) => {
+const useSubmitEmail = (onEventLogModalOpen) => {
   const { events, clearEvents, handleStreamResponse } = useEventStream();
 
+  const emailConfig = useAppStore((state) => state.email.config);
   const emailContent = useAppStore((state) => state.email.content);
   const contacts = useAppStore((state) => state.contacts);
 
@@ -38,21 +39,21 @@ const useSendEmailReport = (onEventLogModalOpen) => {
     }
   );
 
-  const sendEmailReport = (props) => {
-    if (!isValidEmailConfig(props)) {
+  const sendEmailReport = () => {
+    if (!isValidEmailConfig(emailConfig)) {
       return false;
     }
     const emailProps = {
       emailSubject: emailContent?.subject,
       emailBody: emailContent?.body,
-      "emailConfiguration.host": props?.host,
-      "emailConfiguration.port": props?.port,
-      "emailConfiguration.username": props?.username,
-      "emailConfiguration.sender": props?.sender,
-      "emailConfiguration.password": props?.password,
-      "emailConfiguration.smtpAuth": props?.smtpAuth,
-      "emailConfiguration.startTLSEnable": props?.startTLSEnable,
-      "emailConfiguration.replyTo": props?.replyTo,
+      "emailConfiguration.host": emailConfig?.host,
+      "emailConfiguration.port": emailConfig?.port,
+      "emailConfiguration.username": emailConfig?.username,
+      "emailConfiguration.sender": emailConfig?.sender,
+      "emailConfiguration.password": emailConfig?.password,
+      "emailConfiguration.smtpAuth": emailConfig?.smtpAuth,
+      "emailConfiguration.startTLSEnable": emailConfig?.startTLSEnable,
+      "emailConfiguration.replyTo": emailConfig?.replyTo,
 
       contacts: JSON.stringify(contacts),
     };
@@ -61,7 +62,6 @@ const useSendEmailReport = (onEventLogModalOpen) => {
       emailProps["emailAttachments"] = emailContent.attachments;
     }
 
-    sendEmailReport(emailProps);
     onEventLogModalOpen();
 
     clearEvents();
@@ -81,7 +81,7 @@ const useSendEmailReport = (onEventLogModalOpen) => {
   };
 
   return {
-    sendEmailReport: sendEmailReport,
+    sendEmail: sendEmailReport,
     isSending: isValidating,
     sendError: error,
     sendSuccess: !!data,
@@ -89,4 +89,4 @@ const useSendEmailReport = (onEventLogModalOpen) => {
   };
 };
 
-export default useSendEmailReport;
+export default useSubmitEmail;

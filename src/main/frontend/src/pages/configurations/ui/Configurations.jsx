@@ -9,8 +9,11 @@ import {
 import { InfoToolTip } from "src/components";
 import useTestEmailConfig from "../lib/use-test-email-config";
 import UploadConfigBtn from "./UploadConfigBtn";
+import { useAppStore } from "src/store/app-store";
 
-function Configurations({ emailConfig, updateEmailConfig }) {
+function Configurations() {
+  const emailConfig = useAppStore((state) => state.email.config);
+  const updateEmailConfig = useAppStore((state) => state.updateEmailConfig);
   const { testEmailConfig } = useTestEmailConfig();
 
   return (
