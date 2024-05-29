@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import {
   Table,
   TableHeader,
@@ -65,6 +65,7 @@ function ContactsTable({
     );
   }, [visibleColumns]);
 
+  const tableRef = useRef();
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
@@ -154,7 +155,7 @@ function ContactsTable({
   );
 
   return (
-    <>
+    <div ref={tableRef}>
       <Table
         aria-label="Example table with custom cells, pagination and sorting"
         isHeaderSticky
@@ -223,7 +224,7 @@ function ContactsTable({
         addContact={addContact}
         updateContact={updateContact}
       />
-    </>
+    </div>
   );
 }
 

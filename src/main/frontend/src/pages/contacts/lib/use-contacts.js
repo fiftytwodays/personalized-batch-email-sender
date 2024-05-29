@@ -1,7 +1,7 @@
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
 
-import { useAppStore } from "../store/app-store";
+import { useAppStore } from "../../../store/app-store";
 
 const fetcher = async (_, { arg: formData }) => {
   const response = await fetch("/api/excel/parse", {

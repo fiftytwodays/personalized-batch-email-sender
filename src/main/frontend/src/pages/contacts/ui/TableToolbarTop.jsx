@@ -64,7 +64,7 @@ export const TableToolbarTop = ({
       <div className="flex justify-between gap-3 items-end">
         <Input
           isClearable
-          className="w-full sm:max-w-[44%]"
+          className="w-full sm:w-2/3"
           size="sm"
           placeholder="Search by name..."
           startContent={<SearchIcon />}
@@ -101,8 +101,21 @@ export const TableToolbarTop = ({
               ))}
             </DropdownMenu>
           </Dropdown>
-          <Button onPress={openModal} color="primary" endContent={<PlusIcon />}>
+          <Button
+            onPress={openModal}
+            color="primary"
+            className="hidden sm:flex"
+            endContent={<PlusIcon />}
+          >
             Add New
+          </Button>
+          <Button
+            isIconOnly
+            onPress={openModal}
+            className="sm:hidden"
+            color="primary"
+          >
+            <PlusIcon />
           </Button>
           <Button
             variant="faded"

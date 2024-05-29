@@ -86,7 +86,9 @@ function App({ theme, toggleTheme }) {
                 </div>
               }
             >
-              <Contacts />
+              <div className="flex justify-center">
+                <Contacts />
+              </div>
             </Tab>
             <Tab
               key="email"
@@ -101,15 +103,10 @@ function App({ theme, toggleTheme }) {
             </Tab>
           </Tabs>
 
-          <div
-            className="flex z-10 bg-background p-8 justify-center sticky bottom-0 mt-20 w-full"
-            // style={{
-            //   boxShadow: "0 -2px 4px rgba(0, 0, 0, 0.1)",
-            // }}
-          >
+          <div className="flex z-10 bg-background p-8 justify-center sticky bottom-0 mt-20 w-full">
             <Card shadow="sm">
               <CardBody>
-                <div className="flex max-w-80 w-lvw justify-between">
+                <div className="flex w-auto gap-28 md:gap-44 justify-between">
                   <Button variant="bordered" onClick={handlePreviousClick}>
                     Previous
                   </Button>

@@ -1,5 +1,5 @@
 import ContactsTable from "./ContactsTable";
-import { useContacts } from "../../../lib";
+import useContacts from "../lib/use-contacts";
 
 function Contacts() {
   const { contacts, addContact, updateContact, deleteContact, parseContacts } =
