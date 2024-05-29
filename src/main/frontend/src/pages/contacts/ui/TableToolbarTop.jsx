@@ -8,14 +8,14 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 
-import { columns } from "../../../lib/contacts-table-data";
-import { capitalize } from "../../../utils";
+import { columns } from "../config/columns";
+import { capitalize } from "src/utils";
 import {
   UploadIcon,
   SearchIcon,
   ChevronDownIcon,
   PlusIcon,
-} from "../../../components/icons";
+} from "src/components/icons";
 
 export const TableToolbarTop = ({
   contacts,
@@ -71,7 +71,6 @@ export const TableToolbarTop = ({
           value={filterValue}
           onClear={() => onClear()}
           onValueChange={onSearchChange}
-          // autoFocus
         />
         <div className="flex gap-3">
           <Dropdown

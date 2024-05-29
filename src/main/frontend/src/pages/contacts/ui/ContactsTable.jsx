@@ -14,11 +14,11 @@ import {
   Button,
 } from "@nextui-org/react";
 
-import { VerticalDotsIcon } from "../../../components/icons";
+import { VerticalDotsIcon } from "src/components/icons";
 import { TableToolbarTop } from "./TableToolbarTop";
 import TableToolbarBottom from "./TableToolbarBottom";
 import AddContactModal from "./AddContactModal";
-import { columns } from "../../../lib/contacts-table-data";
+import { columns } from "../config/columns";
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "prefix", "phoneNo", "actions"];
 

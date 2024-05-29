@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { Tabs, Tab, Button, useDisclosure } from "@nextui-org/react";
+import {
+  Tabs,
+  Tab,
+  Button,
+  useDisclosure,
+  Card,
+  CardBody,
+} from "@nextui-org/react";
 import { Toaster } from "react-hot-toast";
 
 import { Contacts } from "./pages/contacts";
-import { Email } from "./pages/email/ui/Email";
+import { Email } from "./pages/email";
 import { Configurations } from "./pages/configurations";
+
 import { Navbar, Layout, EventLog } from "./components";
 import {
   SettingsIcon,
@@ -93,23 +101,34 @@ function App({ theme, toggleTheme }) {
             </Tab>
           </Tabs>
 
-          <div className="flex mt-20 w-96 justify-between">
-            <Button variant="bordered" onClick={handlePreviousClick}>
-              Previous
-            </Button>
-            {selectedTabKey === "email" ? (
-              <Button
-                color="primary"
-                onPress={sendEmail}
-                endContent={<SendIcon className="w-4 h-4 text-zinc-50" />}
-              >
-                Send email
-              </Button>
-            ) : (
-              <Button color="primary" onPress={handleNextClick}>
-                Next
-              </Button>
-            )}
+          <div
+            className="flex z-10 bg-background p-8 justify-center sticky bottom-0 mt-20 w-full"
+            // style={{
+            //   boxShadow: "0 -2px 4px rgba(0, 0, 0, 0.1)",
+            // }}
+          >
+            <Card shadow="sm">
+              <CardBody>
+                <div className="flex max-w-80 w-lvw justify-between">
+                  <Button variant="bordered" onClick={handlePreviousClick}>
+                    Previous
+                  </Button>
+                  {selectedTabKey === "email" ? (
+                    <Button
+                      color="primary"
+                      onPress={sendEmail}
+                      endContent={<SendIcon className="w-4 h-4 text-zinc-50" />}
+                    >
+                      Send email
+                    </Button>
+                  ) : (
+                    <Button color="primary" onPress={handleNextClick}>
+                      Next
+                    </Button>
+                  )}
+                </div>
+              </CardBody>
+            </Card>
           </div>
         </form>
       </div>

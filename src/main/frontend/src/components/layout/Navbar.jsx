@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Navbar as _Navbar,
   NavbarBrand,
@@ -13,7 +13,7 @@ import ThemeToggleSwitch from "./ThemeToggleSwitch";
 import { SendIcon } from "../icons";
 
 export default function Navbar({ toggleTheme }) {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
     "Profile",
@@ -29,42 +29,30 @@ export default function Navbar({ toggleTheme }) {
   ];
 
   return (
-    <_Navbar onMenuOpenChange={setIsMenuOpen}>
+    <_Navbar isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <NavbarBrand className="flex gap-4">
+        <NavbarBrand className="flex w-max justify-center gap-4">
           <SendIcon className="w-6 h-6 text-foreground" />
-          <h4 className="font-bold text-foreground">Batch email sender</h4>
+          <h4 className="font-bold text-foreground w-44">Batch email sender</h4>
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent justify="end">
+      <NavbarContent justify="end" className="hidden md:flex">
         <NavbarItem className="hidden lg:flex">
           <ThemeToggleSwitch toggleTheme={toggleTheme} />
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              className="w-full"
-              href="#"
-              size="lg"
-            >
-              {item}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+        <NavbarMenuItem>
+          <div className="flex w-full mt-4 justify-between">
+            <h5>Toggle Theme</h5>
+            <ThemeToggleSwitch toggleTheme={toggleTheme} />
+          </div>
+        </NavbarMenuItem>
       </NavbarMenu>
     </_Navbar>
   );
