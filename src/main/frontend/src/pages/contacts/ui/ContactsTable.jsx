@@ -155,9 +155,9 @@ function ContactsTable({
   );
 
   return (
-    <div ref={tableRef}>
+    <div ref={tableRef} className="max-w-sm md:max-w-7xl sm:max-w-lg">
       <Table
-        aria-label="Example table with custom cells, pagination and sorting"
+        aria-label="Contacts table"
         isHeaderSticky
         bottomContentPlacement="outside"
         classNames={{
@@ -204,7 +204,11 @@ function ContactsTable({
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={"No users found"} items={sortedItems}>
+        <TableBody
+          className=""
+          emptyContent={"No users found"}
+          items={sortedItems}
+        >
           {(item) => (
             <TableRow key={item.serialNo}>
               {(columnKey) => (

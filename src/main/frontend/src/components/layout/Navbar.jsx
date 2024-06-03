@@ -7,26 +7,12 @@ import {
   NavbarMenuItem,
   NavbarContent,
   NavbarItem,
-  Link,
 } from "@nextui-org/react";
 import ThemeToggleSwitch from "./ThemeToggleSwitch";
 import { SendIcon } from "../icons";
 
 export default function Navbar({ toggleTheme }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
 
   return (
     <_Navbar isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -41,8 +27,8 @@ export default function Navbar({ toggleTheme }) {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent justify="end" className="hidden md:flex">
-        <NavbarItem className="hidden lg:flex">
+      <NavbarContent justify="end" className="hidden sm:flex">
+        <NavbarItem>
           <ThemeToggleSwitch toggleTheme={toggleTheme} />
         </NavbarItem>
       </NavbarContent>

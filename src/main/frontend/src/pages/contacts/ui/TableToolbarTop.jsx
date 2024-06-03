@@ -61,7 +61,7 @@ export const TableToolbarTop = ({
 
   return (
     <div className="flex flex-col gap-4 mt-8 lg:min-w-[600px]">
-      <div className="flex justify-between gap-3 items-end">
+      <div className="flex justify-between gap-3 items-center">
         <Input
           isClearable
           className="w-full sm:w-2/3"
