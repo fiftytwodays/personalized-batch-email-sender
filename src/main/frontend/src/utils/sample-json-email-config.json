@@ -1,0 +1,10 @@
+{
+    "sender": "John",
+    "host": "smtp.gmail.com",
+    "username": "john@gmail.com",
+    "password": "password",
+    "port": 587,
+    "smtpAuth": true,
+    "startTLSEnable": true,
+    "replyTo": ""
+}

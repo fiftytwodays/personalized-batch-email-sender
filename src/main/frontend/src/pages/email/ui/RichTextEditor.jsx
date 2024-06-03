@@ -16,7 +16,7 @@ const modules = {
   ],
 };
 
-const Editor = ({ content, setContent }) => {
+const RichTextEditor = ({ content, setContent }) => {
   // Function to handle content change
   const handleContentChange = (value) => {
     setContent(value);
@@ -35,4 +35,4 @@ const Editor = ({ content, setContent }) => {
   );
 };
 
-export default Editor;
+export default RichTextEditor;

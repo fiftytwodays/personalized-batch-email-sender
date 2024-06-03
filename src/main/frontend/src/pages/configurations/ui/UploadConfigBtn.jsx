@@ -1,27 +1,13 @@
 import { useState } from "react";
-import hasEmailConfiguration from "../lib/validate-email-props";
 import toast from "react-hot-toast";
-import { Trash } from "./icons";
-import { UploadIcon } from "./icons";
 
-function EmailConfigUploader({ setEmailProperties }) {
+import { Trash, UploadIcon } from "src/components/icons";
+import { isValidEmailConfig } from "../lib/validate-email-config";
+
+function UploadConfigBtn({ updateEmailConfig }) {
   const [fileName, setFileName] = useState("");
 
-  //   const setInputEmailPropValues = (properties) => {
-  //     senderRef.current.value = properties?.emailConfiguration?.sender;
-  //     hostRef.current.value = properties?.emailConfiguration?.host;
-  //     usernameRef.current.value = properties?.emailConfiguration?.username;
-  //     passwordRef.current.value = properties?.emailConfiguration?.password;
-  //     portRef.current.value = properties?.emailConfiguration?.port;
-  //     smtpAuthRef.current.checked = properties?.emailConfiguration?.smtpAuth;
-  //     startTLSRef.current.checked =
-  //       properties?.emailConfiguration?.startTLSEnable;
-
-  //     replyToRef.current.value = properties?.emailConfiguration?.replyTo;
-  //     receiverRef.current.value = properties?.receiver;
-  //   };
-
-  const handleFileUpload = (event) => {
+  const uploadFile = (event) => {
     const file = event.target.files[0];
     if (!file) {
       return;
@@ -50,17 +36,17 @@ function EmailConfigUploader({ setEmailProperties }) {
     reader.onload = (e) => {
       const content = e.target.result;
       const parsedData = JSON.parse(content);
-      if (hasEmailConfiguration(parsedData)) {
+      if (isValidEmailConfig(parsedData)) {
         toast.success("Valid JSON Config");
-        setEmailProperties({
-          sender: parsedData?.emailConfiguration?.sender,
-          host: parsedData?.emailConfiguration?.host,
-          username: parsedData?.emailConfiguration?.username,
-          password: parsedData?.emailConfiguration?.password,
-          port: parseInt(parsedData?.emailConfiguration?.port, 10),
-          smtpAuth: parsedData?.emailConfiguration?.smtpAuth,
-          startTLSEnable: parsedData?.emailConfiguration?.startTLSEnable,
-          replyTo: parsedData?.emailConfiguration?.replyTo,
+        updateEmailConfig({
+          sender: parsedData?.sender,
+          host: parsedData?.host,
+          username: parsedData?.username,
+          password: parsedData?.password,
+          port: parseInt(parsedData?.port, 10),
+          smtpAuth: parsedData?.smtpAuth,
+          startTLSEnable: parsedData?.startTLSEnable,
+          replyTo: parsedData?.replyTo,
           receiver: parsedData?.receiver,
         });
       } else {
@@ -74,7 +60,7 @@ function EmailConfigUploader({ setEmailProperties }) {
   const removeJSONConfig = () => {
     setFileName("");
 
-    setEmailProperties({
+    updateEmailConfig({
       sender: "",
       host: "",
       username: "",
@@ -95,7 +81,7 @@ function EmailConfigUploader({ setEmailProperties }) {
           name="input-json-config"
           type="file"
           accept=".json"
-          onChange={handleFileUpload}
+          onChange={uploadFile}
         />
 
         <label
@@ -117,4 +103,4 @@ function EmailConfigUploader({ setEmailProperties }) {
   );
 }
 
-export default EmailConfigUploader;
+export default UploadConfigBtn;

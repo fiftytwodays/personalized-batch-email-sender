@@ -1,4 +1,5 @@
-import { PaperClipIcon, Trash } from "./icons";
+import { PaperClipIcon, Trash } from "src/components/icons";
+
 const AttachmentsUploader = ({ attachments, setAttachments }) => {
   const uploadAttachments = (e) => {
     const newAttachments = [...attachments, ...e.target.files];
