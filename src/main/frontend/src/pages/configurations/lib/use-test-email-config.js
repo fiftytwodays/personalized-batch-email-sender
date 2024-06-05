@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { isValidEmailConfig } from "./validate-email-config";
 
 const fetcher = async (_, { arg: emailConfig }) => {
+  toast.loading("Testing...");
   const response = await fetch("/api/email-settings/test", {
     method: "POST",
     body: JSON.stringify(emailConfig),
@@ -14,25 +15,22 @@ const fetcher = async (_, { arg: emailConfig }) => {
     },
   });
   const data = await response?.ok;
+  toast.dismiss();
   return data;
 };
 
 const useTestEmailConfig = () => {
-  const { trigger, data, error, isMutating } = useSWRMutation(
-    "/api/email/config/test",
-    fetcher,
-    {
-      onSuccess: (fetchedData) => {
-        fetchedData && toast.success("Test successful!");
-      },
-      onError: () => {
-        toast.error("Testing failed.");
-      },
+  const { trigger } = useSWRMutation("/api/email/config/test", fetcher, {
+    onSuccess: (fetchedData) => {
+      fetchedData && toast.success("Test successful!");
+    },
+    onError: () => {
+      toast.error("Testing failed.");
+    },
 
-      throwOnError: false,
-      revalidate: false,
-    }
-  );
+    throwOnError: false,
+    revalidate: false,
+  });
 
   const testEmailConfig = (config) => {
     if (isValidEmailConfig(config)) {
@@ -56,9 +54,6 @@ const useTestEmailConfig = () => {
 
   return {
     testEmailConfig,
-    isTesting: isMutating,
-    testError: error,
-    testSuccess: !!data,
   };
 };
 
