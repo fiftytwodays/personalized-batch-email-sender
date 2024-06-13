@@ -4,6 +4,7 @@ import in.fiftytwodays.crm.email.sender.entity.EmailConfiguration;
 import in.fiftytwodays.crm.email.sender.entity.EmailDetails;
 import jakarta.activation.DataSource;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.util.ByteArrayDataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         boolean attachmentsAvailable = details.getAttachments() != null && details.getAttachments().length > 0;
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, attachmentsAvailable);
-        mimeMessageHelper.setFrom(emailConfiguration.getSender());
+        mimeMessageHelper.setFrom(new InternetAddress(emailConfiguration.getUsername(), emailConfiguration.getSender()));
         if (StringUtils.hasText(emailConfiguration.getReplyTo())) {
             mimeMessageHelper.setReplyTo(emailConfiguration.getReplyTo());
         }
