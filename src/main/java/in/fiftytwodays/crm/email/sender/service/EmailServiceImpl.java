@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         boolean attachmentsAvailable = details.getAttachments() != null && details.getAttachments().length > 0;
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, attachmentsAvailable);
-        mimeMessageHelper.setFrom(new InternetAddress(emailConfiguration.getUsername(), emailConfiguration.getSender()));
+        mimeMessageHelper.setFrom(emailConfiguration.getUsername(), emailConfiguration.getSender());
         if (StringUtils.hasText(emailConfiguration.getReplyTo())) {
             mimeMessageHelper.setReplyTo(emailConfiguration.getReplyTo());
         }
@@ -67,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
             throws MailException {
         emailConfigurationHelper.setEmailConfiguration(javaMailSender, emailConfiguration);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(emailConfiguration.getSender());
+        message.setFrom(emailConfiguration.getSender() + " <" + emailConfiguration.getUsername() + ">");
         message.setTo(receiver);
         if (StringUtils.hasText(emailConfiguration.getReplyTo())) {
             message.setReplyTo(emailConfiguration.getReplyTo());
